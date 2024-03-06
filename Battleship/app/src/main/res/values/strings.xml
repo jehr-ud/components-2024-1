@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Battleship</string>
+    <string name="main_activity_welcome">Bienvenido a Battleship, Reglas: </string>
+    <string name="main_activity_lbl_player1">Nombre Jugador 1</string>
+    <string name="main_activity_lbl_player2">Nombre Jugador 2</string>
+    <string name="main_activity_btn_play">Jugar</string>
+</resources>
