@@ -1,5 +1,6 @@
 package com.example.battleship
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -15,8 +16,8 @@ class MainActivity : ComponentActivity() {
         val btnPlay = findViewById<View>(R.id.btnPlay) as Button
 
         btnPlay.setOnClickListener {
-            val toast = Toast.makeText(this, "Clic en botón!!", Toast.LENGTH_LONG)
-            toast.show()
+            var intent = Intent(this, Gamectivity::class.java)
+            startActivity(intent)
         }
     }
 }
