@@ -20,7 +20,7 @@
         android:text="@string/main_activity_lbl_player1" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/txtPlayer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -33,7 +33,7 @@
         android:text="@string/main_activity_lbl_player2" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/txtPlayer2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
