@@ -1,12 +1,13 @@
 package com.example.battleship
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,8 +17,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,13 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.battleship.Rules.messages
 import com.example.battleship.ui.theme.BattleshipTheme
+import androidx.compose.foundation.layout.Column as Column
 
 class RulesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BattleshipTheme {
-                RulesLazy(messages)
+                RulesLazy(messages = messages)
             }
         }
     }
@@ -47,13 +53,16 @@ class RulesActivity : ComponentActivity() {
 
 data class Message(val title: String, val body: String, val image: Int)
 
+
 @Composable
 fun RulesLazy(messages: List<Message>) {
     remember {
         Rules.messages
     }
     LazyColumn(
+        contentPadding = PaddingValues(top = 60.dp)
     ) {
+
         items(messages) { message ->
             MyCard(message)
         }
@@ -77,12 +86,12 @@ fun MyCard(message: Message) {
             elevation = CardDefaults.cardElevation(10.dp)
         ) {
             Column {
-                Image(message)
+                CardImage(message)
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
                 ) {
-                    Text(message)
+                    CardText(message)
                 }
             }
         }
@@ -90,7 +99,7 @@ fun MyCard(message: Message) {
 }
 
 @Composable
-fun Text(message: Message) {
+fun CardText(message: Message) {
     Text(
         text = message.title,
         fontSize = 28.sp,
@@ -104,13 +113,11 @@ fun Text(message: Message) {
         fontSize = 18.sp,
         maxLines = 5,
         overflow = TextOverflow.Clip,
-        modifier = Modifier
-            .padding(12.dp)
     )
 }
 
 @Composable
-fun Image(message: Message) {
+fun CardImage(message: Message) {
     Image(
         painter = painterResource(id = message.image),
         contentDescription = "Image",
@@ -124,6 +131,32 @@ fun Image(message: Message) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    RulesLazy(messages)
+    RulesLayout()
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RulesLayout() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "BattleShip Rules",
+                        fontWeight = FontWeight.Bold
+                    )
+                })
+        },
+    ) {
+        Column {
+            RulesLazy(messages = messages)
+
+        }
+    }
 }
 
