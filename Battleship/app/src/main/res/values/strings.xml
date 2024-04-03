@@ -5,4 +5,7 @@
     <string name="main_activity_lbl_player2">Nombre Jugador 2</string>
     <string name="main_activity_btn_play">Jugar</string>
     <string name="title_activity_rules">rulesActivity</string>
+
+    <string name="screen_1">Juego</string>
+    <string name="screen_2">Reglas</string>
 </resources>
