@@ -8,10 +8,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -107,13 +109,15 @@ fun CardText(message: Message) {
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Monospace
     )
+
     Text(
         text = message.body,
         color = Color(0xFF9FA7EC),
         fontSize = 18.sp,
-        maxLines = 5,
+        maxLines = 20,
         overflow = TextOverflow.Clip,
-    )
+        modifier = Modifier.padding(2.dp),
+        )
 }
 
 @Composable
@@ -122,8 +126,7 @@ fun CardImage(message: Message) {
         painter = painterResource(id = message.image),
         contentDescription = "Image",
         modifier = Modifier
-            .height(180.dp)
-            .fillMaxWidth(),
+            .width(600.dp).fillMaxHeight(),
         contentScale = ContentScale.Crop
     )
 }
@@ -155,7 +158,6 @@ fun RulesLayout() {
     ) {
         Column {
             RulesLazy(messages = messages)
-
         }
     }
 }
