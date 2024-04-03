@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.battleship.Rules.messages
+import com.example.battleship.model.Message
 import com.example.battleship.ui.theme.BattleshipTheme
 import androidx.compose.foundation.layout.Column as Column
 
@@ -53,7 +54,7 @@ class RulesActivity : ComponentActivity() {
     }
 }
 
-data class Message(val title: String, val body: String, val image: Int)
+
 
 
 @Composable
