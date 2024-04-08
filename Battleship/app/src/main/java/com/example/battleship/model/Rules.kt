@@ -1,6 +1,6 @@
-package com.example.battleship
+package com.example.battleship.model
 
-import com.example.battleship.model.Message
+import com.example.battleship.R
 
 object Rules {
     val messages: List<Message> = listOf(

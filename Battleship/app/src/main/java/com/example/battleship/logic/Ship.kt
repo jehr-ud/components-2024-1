@@ -1,6 +1,6 @@
 package com.example.battleship.logic
 
-import com.example.battleship.logic.Enums.TypeShip
+import com.example.battleship.model.Enums.TypeShip
 
 class Ship (
     var type: TypeShip,

@@ -1,4 +1,4 @@
-package com.example.battleship.logic.Enums
+package com.example.battleship.model.Enums
 
 enum class TypeShip {
     CARRIER,
