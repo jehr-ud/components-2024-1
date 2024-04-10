@@ -5,7 +5,7 @@ import com.example.battleship.model.Enums.StatusCell
 class Game (
     var board: Board,
     val player1: Player,
-    val player2: Player) {
+    val player2: Player?) {
 
     fun generateCells(rows: Int, cols: Int){
         for (row in 1..rows){
