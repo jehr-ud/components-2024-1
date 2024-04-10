@@ -51,17 +51,34 @@ import kotlinx.coroutines.launch
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.battleship.logic.Board
+import com.example.battleship.logic.Game
+import com.example.battleship.logic.Player
 import com.example.battleship.ui.composables.content.GameContent
 import com.example.battleship.ui.composables.content.RulesLazy
 
 
 class GameActivity : AppCompatActivity() {
+    private lateinit var game: Game
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        startGame()
+
         setContent {
-            GameScreen()
+            GameScreen(game)
         }
+    }
+
+    private fun startGame(){
+        val rows = 10
+        val cols = 10
+        val board = Board(rows, cols)
+        val player1 = Player("juan")
+        val player2 = Player("pedro")
+
+        game = Game(board, player1, player2)
+        game.generateCells(rows, cols)
     }
 }
 
@@ -69,9 +86,9 @@ class GameActivity : AppCompatActivity() {
     ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class,
     ExperimentalMaterial3Api::class
 )
-@Preview
+
 @Composable
-fun GameScreen() {
+fun GameScreen(game: Game) {
     val navigationState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -174,5 +191,14 @@ fun GameScreen() {
 @Preview
 @Composable
 fun GamePreview() {
-    GameScreen()
+    val rows = 10
+    val cols = 10
+    val board = Board(rows, cols)
+    val player1 = Player("juan")
+    val player2 = Player("pedro")
+
+    val game = Game(board, player1, player2)
+    game.generateCells(rows, cols)
+
+    GameScreen(game)
 }
