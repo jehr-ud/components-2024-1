@@ -13,32 +13,6 @@
         android:layout_margin="40dp"
         />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/main_activity_lbl_player1" />
-
-    <EditText
-        android:id="@+id/txtPlayer1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/main_activity_lbl_player2" />
-
-    <EditText
-        android:id="@+id/txtPlayer2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
-
     <Button
         android:id="@+id/btnPlay"
         android:layout_width="match_parent"
