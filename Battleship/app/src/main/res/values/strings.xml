@@ -10,7 +10,7 @@
     <string name="match_activity_lbl1">Alias de la partida</string>
     <string name="match_activity_btn">Crear partida</string>
     <string name="match_activity_empty_alias">Debe digitar un alias</string>
-
+    <string name="match_activity_hint">¡Ingresa el alias de la partida!</string>
     <string name="open_drawer">Menu</string>
     <string name="version">1.0.0</string>
 </resources>
