@@ -6,6 +6,8 @@
     <string name="main_activity_btn_play">Login</string>
     <string name="title_activity_rules">rulesActivity</string>
     <string name="main_activity_empty_message">Debe digitar el nombre</string>
+    <string name="main_activity_lbl_email">Email</string>
+    <string name="main_activity_lbl_password">Password</string>
 
     <string name="match_activity_lbl1">Alias de la partida</string>
     <string name="match_activity_btn">Crear partida</string>
