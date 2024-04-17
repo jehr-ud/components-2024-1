@@ -59,7 +59,7 @@ class MatchActivity : AppCompatActivity() {
         val player2 = null
         val alias = binding.txtMatchAlias.text.toString()
 
-        val game = Game(board, alias, false, player1, player2)
+        val game = Game(board, alias, false, "", player1, player2)
         game.generateCells(rows, cols)
 
         val gameID = database.child("games").push().key;

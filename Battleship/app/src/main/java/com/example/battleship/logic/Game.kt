@@ -6,6 +6,7 @@ class Game (
     var board: Board,
     var aliasMatch: String,
     var canStart: Boolean = false,
+    var turn: String,
     val player1: Player,
     val player2: Player?) {
 
