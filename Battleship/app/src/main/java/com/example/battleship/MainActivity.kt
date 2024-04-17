@@ -25,10 +25,10 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
 
         binding.btnPlay.setOnClickListener {
-            val email = binding.txtEmail.toString()
-            val password = binding.txtPassword.toString()
-            Toast.makeText(this, email, Toast.LENGTH_LONG)
-            auth.createUserWithEmailAndPassword(email, password)
+            val email = binding.txtEmail.text.toString()
+            val password = binding.txtPassword.text.toString()
+
+            auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d("login-ud", "createUserWithEmail:success")
