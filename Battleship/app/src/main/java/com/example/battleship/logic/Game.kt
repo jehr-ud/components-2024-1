@@ -10,7 +10,7 @@ class Game (
     fun generateCells(rows: Int, cols: Int){
         for (row in 1..rows){
             for (col in 1..cols){
-                var cell = Cell(StatusCell.EMPTY)
+                var cell = Cell(StatusCell.EMPTY, row, col)
                 board.cells.add(cell)
             }
         }
