@@ -44,9 +44,14 @@ class MatchActivity : AppCompatActivity() {
 
         val game = Game(board, player1, player2)
         game.generateCells(rows, cols)
-
-        database.child("games").child("abcd1").setValue(game)
-
+        val gameID = database.child("games").push().key;
+        try {
+            gameID?.let {
+                database.child("games").child(it).setValue(game)
+            }
+        }catch (e: Exception){
+            Toast.makeText(this, "Error registro", Toast.LENGTH_SHORT).show()
+        }
 
         var intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
