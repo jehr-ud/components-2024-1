@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
 
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
 
-        val loggedUser = sharedPref.getString(getString(R.string.user_logged), null)
+        val loggedUser = sharedPref.getString(getString(R.string.user_logged_uid), null)
 
         if (!loggedUser.isNullOrEmpty()) {
                 goToGame()
@@ -43,19 +43,32 @@ class MainActivity : ComponentActivity() {
                         Log.d("login-ud", "createUserWithEmail:success")
                         val user = auth.currentUser
 
-                        Log.d("login_user", user.toString())
-
                         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: null
 
-                        if (sharedPref != null) {
+                        if (user != null && sharedPref != null) {
+                            Log.d("login_user_uid", user.uid)
+                            Log.d("login_user_email", user.email.toString())
+
                             with (sharedPref.edit()) {
-                                putString(getString(R.string.user_logged), user.toString())
+                                putString(getString(R.string.user_logged_uid), user.uid)
+                                putString(getString(R.string.user_logged_email), user.email.toString())
                                 apply()
                             }
-                        }
 
-                        goToGame()
+                            goToGame()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.main_activity_error_storage_login),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.main_activity_incorrect_login),
+                            Toast.LENGTH_LONG
+                        ).show()
                         Log.w("login-ud", "createUserWithEmail:failure", task.exception)
                     }
                 }

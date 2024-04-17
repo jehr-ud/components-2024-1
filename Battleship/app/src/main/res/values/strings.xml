@@ -8,8 +8,10 @@
     <string name="main_activity_empty_message">Debe digitar el nombre</string>
     <string name="main_activity_lbl_email">Email</string>
     <string name="main_activity_lbl_password">Password</string>
-
-    <string name="user_logged">user_logged</string>
+    <string name="main_activity_incorrect_login">Usuario o contraseña incorrecta</string>
+    <string name="main_activity_error_storage_login">Error procesando el usuario</string>
+    <string name="user_logged_uid">user_logged_uid12</string>
+    <string name="user_logged_email">user_logged_email12</string>
 
 
     <string name="match_activity_lbl1">Alias de la partida</string>

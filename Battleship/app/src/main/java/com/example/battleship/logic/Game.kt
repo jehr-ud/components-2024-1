@@ -4,6 +4,8 @@ import com.example.battleship.model.Enums.StatusCell
 
 class Game (
     var board: Board,
+    var aliasMatch: String,
+    var canStart: Boolean = false,
     val player1: Player,
     val player2: Player?) {
 
