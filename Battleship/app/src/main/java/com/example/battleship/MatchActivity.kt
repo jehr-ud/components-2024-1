@@ -39,11 +39,12 @@ class MatchActivity : AppCompatActivity() {
         val rows = 10
         val cols = 10
         val board = Board(rows, cols)
-        val player1 = Player("juan")
+        val player1 = Player("juan", "")
         val player2 = null
 
         val game = Game(board, player1, player2)
         game.generateCells(rows, cols)
+
         val gameID = database.child("games").push().key;
         try {
             gameID?.let {

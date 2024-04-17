@@ -1,5 +1,6 @@
 package com.example.battleship
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,14 @@ class MainActivity : ComponentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+
+        val loggedUser = sharedPref.getString(getString(R.string.user_logged), null)
+
+        if (!loggedUser.isNullOrEmpty()) {
+                goToGame()
+        }
+
         binding.btnPlay.setOnClickListener {
             val email = binding.txtEmail.text.toString()
             val password = binding.txtPassword.text.toString()
@@ -33,6 +42,18 @@ class MainActivity : ComponentActivity() {
                     if (task.isSuccessful) {
                         Log.d("login-ud", "createUserWithEmail:success")
                         val user = auth.currentUser
+
+                        Log.d("login_user", user.toString())
+
+                        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: null
+
+                        if (sharedPref != null) {
+                            with (sharedPref.edit()) {
+                                putString(getString(R.string.user_logged), user.toString())
+                                apply()
+                            }
+                        }
+
                         goToGame()
                     } else {
                         Log.w("login-ud", "createUserWithEmail:failure", task.exception)
@@ -41,7 +62,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun goToGame(){
+    private fun goToGame(){
         var intent = Intent(this, MatchActivity::class.java)
         startActivity(intent)
     }

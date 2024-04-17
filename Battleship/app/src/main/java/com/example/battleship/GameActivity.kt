@@ -74,8 +74,8 @@ class GameActivity : AppCompatActivity() {
         val rows = 10
         val cols = 10
         val board = Board(rows, cols)
-        val player1 = Player("juan")
-        val player2 = Player("pedro")
+        val player1 = Player("juan", "")
+        val player2 = Player("pedro", "")
 
         game = Game(board, player1, player2)
         game.generateCells(rows, cols)
@@ -194,8 +194,8 @@ fun GamePreview() {
     val rows = 10
     val cols = 10
     val board = Board(rows, cols)
-    val player1 = Player("juan")
-    val player2 = Player("pedro")
+    val player1 = Player("juan", "")
+    val player2 = Player("pedro", "")
 
     val game = Game(board, player1, player2)
     game.generateCells(rows, cols)

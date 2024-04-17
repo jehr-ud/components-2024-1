@@ -9,6 +9,9 @@
     <string name="main_activity_lbl_email">Email</string>
     <string name="main_activity_lbl_password">Password</string>
 
+    <string name="user_logged">user_logged</string>
+
+
     <string name="match_activity_lbl1">Alias de la partida</string>
     <string name="match_activity_btn">Crear partida</string>
     <string name="match_activity_empty_alias">Debe digitar un alias</string>
