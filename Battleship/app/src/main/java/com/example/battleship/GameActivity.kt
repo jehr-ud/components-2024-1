@@ -1,7 +1,9 @@
 package com.example.battleship
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -56,29 +58,64 @@ import com.example.battleship.logic.Game
 import com.example.battleship.logic.Player
 import com.example.battleship.ui.composables.content.GameContent
 import com.example.battleship.ui.composables.content.RulesLazy
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class GameActivity : AppCompatActivity() {
-    private lateinit var game: Game
+    private var game: Game? = null
+    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startGame()
+        database = Firebase.database.reference
 
-        setContent {
-            GameScreen(game)
+        val gameId = intent.getStringExtra("gameId")
+        gameId?.let {
+            fetchGameFromDatabase(gameId)
         }
     }
 
-    private fun startGame(){
-        val rows = 10
-        val cols = 10
-        val board = Board(rows, cols)
-        val player1 = Player("juan", "")
-        val player2 = Player("pedro", "")
+    private fun fetchGameFromDatabase(gameId: String) {
+        Toast.makeText(this@GameActivity, "Search Game Id: $gameId", Toast.LENGTH_LONG).show()
 
-        game = Game(board, "test",  false, "", player1, player2, "")
-        game.generateCells(rows, cols)
+        database.child("games").child(gameId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val game = dataSnapshot.getValue(Game::class.java)
+                Toast.makeText(this@GameActivity, "Game found", Toast.LENGTH_LONG).show()
+                game?.let {
+                    updateGame(game)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(this@GameActivity, "Error retrieving game: ${databaseError.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun updateGame(game: Game) {
+        this.game = game
+        if (game.finishAt.isNotBlank()){
+            Toast.makeText(this@GameActivity, "Game finished... ", Toast.LENGTH_LONG).show()
+            goToMatch()
+        }
+
+        this.game?.let {
+            setContent {
+                GameScreen(this.game!!)
+            }
+        }
+    }
+
+    private fun goToMatch(){
+        startActivity(Intent(this, MatchActivity::class.java))
+        finish()
     }
 }
 
