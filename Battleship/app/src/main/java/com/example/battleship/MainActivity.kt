@@ -2,6 +2,7 @@ package com.example.battleship
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +27,11 @@ class MainActivity : ComponentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
-        val loggedUser = sharedPref.getString(getString(R.string.user_logged_uid), null)
+        val userId = sharedPreferences.getString("userId", "")
 
-        if (!loggedUser.isNullOrEmpty()) {
+        if (!userId.isNullOrEmpty()) {
                 goToGame()
         }
 
@@ -42,27 +44,12 @@ class MainActivity : ComponentActivity() {
                     if (task.isSuccessful) {
                         Log.d("login-ud", "createUserWithEmail:success")
                         val user = auth.currentUser
-
-                        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: null
-
-                        if (user != null && sharedPref != null) {
-                            Log.d("login_user_uid", user.uid)
-                            Log.d("login_user_email", user.email.toString())
-
-                            with (sharedPref.edit()) {
-                                putString(getString(R.string.user_logged_uid), user.uid)
-                                putString(getString(R.string.user_logged_email), user.email.toString())
-                                apply()
-                            }
-
-                            goToGame()
-                        } else {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.main_activity_error_storage_login),
-                                Toast.LENGTH_LONG
-                            ).show()
+                        user?.let {
+                            saveUserData(user.uid, user.email)
                         }
+
+                        goToGame()
+
                     } else {
                         Toast.makeText(
                             this,
@@ -75,8 +62,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun saveUserData(userId: String, email: String?) {
+        val editor = sharedPreferences.edit()
+        editor.putString("userId", userId)
+        email?.let { editor.putString("email", it) }
+        editor.apply()
+    }
+
     private fun goToGame(){
-        var intent = Intent(this, MatchActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, MatchActivity::class.java))
+        finish()
     }
 }
