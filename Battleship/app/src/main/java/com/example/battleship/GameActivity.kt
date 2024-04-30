@@ -216,7 +216,7 @@ fun GameScreen(game: Game) {
             ) {
                 Column(Modifier.padding(it)) {
                     NavHost(navController, startDestination = "game") {
-                        composable("game") { GameContent() }
+                        composable("game") { GameContent(game) }
                         composable("rules") { RulesLazy(messages) }
                     }
                 }
@@ -230,12 +230,12 @@ fun GameScreen(game: Game) {
 fun GamePreview() {
     val rows = 10
     val cols = 10
-    val board = Board(rows, cols)
+    val board = Board()
     val player1 = Player("juan", "")
     val player2 = Player("pedro", "")
 
-    val game = Game(board, "test", false, "", player1, player2, "")
-    game.generateCells(rows, cols)
+    val game = Game(rows, cols, board, "test", false, "", player1, player2, "")
+    game.generateCells()
 
     GameScreen(game)
 }

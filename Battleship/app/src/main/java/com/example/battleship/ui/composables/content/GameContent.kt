@@ -14,18 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.battleship.logic.Game
 
 @Composable
-fun GameContent(modifier: Modifier = Modifier) {
+fun GameContent(game: Game, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-        items(10) { row ->
+        items(game.rows) { row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                repeat(10) { col ->
+                repeat(game.cols) { col ->
                     Box(
                         modifier = Modifier
                             .weight(1f)

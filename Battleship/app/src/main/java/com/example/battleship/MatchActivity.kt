@@ -77,12 +77,13 @@ class MatchActivity : AppCompatActivity() {
                         gameID?.let {
                             val rows = 10
                             val cols = 10
-                            val board = Board(rows, cols)
+                            val board = Board()
                             val player1 = Player(email,  userId)
                             val player2 = null
 
-                            val game = Game(board, alias, false, userId, player1, player2, "")
-                            game.generateCells(rows, cols)
+                            val game = Game(rows, cols, board, alias, false, userId, player1, player2, "")
+                            game.generateCells()
+                            game.generateShips()
 
                             database.child("games").child(it).setValue(game)
                             setupGameUpdateListener(gameID)
