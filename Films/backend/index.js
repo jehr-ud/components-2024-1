@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
-mongoose.connect('mongodb://localhost:27017/filmDB', {
+mongoose.connect('mongodb+srv://jehernandezr:uaQRn7QoYvzOxnCt@cluster0.oqcimoq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
