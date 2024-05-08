@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+
 const app = express();
 const PORT = 3000;
 
@@ -17,6 +18,7 @@ const Film = mongoose.model('Film', filmSchema);
 app.use(express.json());
 
 // Routes
+// POST http://localhost:3000/films
 app.post('/films', async (req, res) => {
   const { title } = req.body;
   try {

@@ -3,13 +3,14 @@
 1. create project
 
 ```
-npm init -y´
+npm init -y
 ```
 
 2. install dependencies
 
 ```
-npm install express mongoose
+npm install express
+npm install mongoose
 
 npm install
 ```
