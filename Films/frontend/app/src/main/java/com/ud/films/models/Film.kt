@@ -1,4 +1,3 @@
 package com.ud.films.models
 
-class Film {
-}
+data class Film (var title: String)
