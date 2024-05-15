@@ -7,13 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.ud.films.models.Film
 import com.ud.films.repositories.FilmsRepository
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class FilmViewModel : ViewModel() {
     private val filmsRepository = FilmsRepository()
 
     private val _filmsLiveData = MutableLiveData<List<Film>>()
-    val filmsLiveData: LiveData<List<Film>> get() = _filmsLiveData
+    val filmsLiveData: LiveData<List<Film>> = _filmsLiveData
 
     init {
         loadFilms()
@@ -25,5 +24,4 @@ class FilmViewModel : ViewModel() {
             _filmsLiveData.value = films
         }
     }
-
 }
