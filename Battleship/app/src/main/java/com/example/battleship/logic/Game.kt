@@ -1,122 +1,91 @@
 package com.example.battleship.logic
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import com.example.battleship.model.Enums.ShipAlignment
 import com.example.battleship.model.Enums.StatusCell
 import com.example.battleship.model.Enums.TypeShip
 
-class Game {
-    var board: Board
-    var aliasMatch: String
-    var canStart: Boolean = false
-    var turn: String
-    var finishAt: String
-    val player1: Player
-    var player2: Player?
-    var rows: Int = 10
-    var cols: Int = 10
+fun Color.toHex(): String {
+    return String.format("#%06X", (this.toArgb() and 0xFFFFFF))
+}
+                                                                                //funciones para manejar colores
+fun String.toColor(): Color {
+    return Color(android.graphics.Color.parseColor(this))
+}
 
-    constructor() {
-        board = Board()
-        aliasMatch = ""
-        turn = ""
-        player1 = Player("", "")
-        player2 = null
-        finishAt = ""
-        rows = 10
-        cols = 10
-    }
 
-    constructor(
-        rows: Int,
-        cols: Int,
-        board: Board,
-        aliasMatch: String,
-        canStart: Boolean = false,
-        turn: String,
-        player1: Player,
-        player2: Player?,
-        finishAt: String
-    ) {
-        this.board = board
-        this.aliasMatch = aliasMatch
-        this.canStart = canStart
-        this.turn = turn
-        this.player1 = player1
-        this.player2 = player2
-        this.finishAt = finishAt
-        this.cols = cols
-        this.rows = rows
-    }
-
+class Game(
+    var rows: Int = 10,
+    var cols: Int = 10,
+    var board: Board = Board(),
+    var aliasMatch: String = "",
+    var canStart: Boolean = false,
+    var turn: String = "",
+    var player1: Player = Player("", ""),
+    var player2: Player? = null,
+    var finishAt: String = ""
+) {
     fun generateCells() {
-        for (row in 1..rows) {
-            for (col in 1..cols) {
-                var cell = Cell(StatusCell.EMPTY, row, col)
-                board.cells.add(cell)
+        for (row in 0 until rows) {
+            for (col in 0 until cols) {
+                val cell = Cell(StatusCell.EMPTY, row, col)
+                board.cells[row][col] = cell
             }
         }
     }
+    val shipColors: Map<String, String> = mapOf( // Mapa de colores segun el barco, no implemented
+        "CARRIER" to "#0000FF", // Azul
+        "BATTLE_SHIP" to "#FF0000", // Rojo
+        "CRUISE" to "#00FF00", // Verde
+        "SUBMARINE" to "#FFFF00", // Amarillo
+        "DESTROYER" to "#FF00FF" // Rosado raro xd
+    )
 
     fun generateShips() {
-        val ships1 = mutableListOf(
-            Ship(
-                TypeShip.CARRIER,
-                ShipAlignment.VERTICAL,
-                mutableListOf(
-                    Cell(StatusCell.OCCUPIED, 1, 1),
-                    Cell(StatusCell.OCCUPIED, 2, 1)
-                )
-            ),
-            Ship(
-                TypeShip.BATTLE_SHIP,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.CRUISE,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.DESTROYER,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.SUBMARINE,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-        )
-        val ships2 = mutableListOf(
-            Ship(
-                TypeShip.CARRIER,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.BATTLE_SHIP,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.CRUISE,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.DESTROYER,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
-            Ship(
-                TypeShip.SUBMARINE,
-                ShipAlignment.VERTICAL,
-                mutableListOf(Cell(StatusCell.OCCUPIED, 1, 1))
-            ),
+        // Tipos de barcos que se van a generar
+        val shipTypes = listOf(
+            TypeShip.CARRIER,
+            TypeShip.BATTLE_SHIP,
+            TypeShip.CRUISE,
+            TypeShip.SUBMARINE,
+            TypeShip.DESTROYER
         )
 
-        board.ships.put("player1", ships1)
-        board.ships.put("player2", ships2)
+        // Itera sobre cada tipo de barco
+        for (type in shipTypes) {
+            // Crea un nuevo barco del tipo actual con alineación vertical
+            val ship = Ship(type, ShipAlignment.VERTICAL)
+            // Intenta colocar el barco en una posición aleatoria hasta que se coloque correctamente
+            while (true) {
+                // Genera una posición aleatoria dentro del tablero
+                val row = (0 until rows).random()
+                val col = (0 until cols).random()
+                // Define la alineación del barco de forma aleatoria
+                ship.aling = if ((0..1).random() == 0) ShipAlignment.VERTICAL else ShipAlignment.HORIZONTAL
+                // Intenta colocar el barco en la posición aleatoria
+                if (board.placeShip(ship, row, col)) {
+                    break // El barco se colocó correctamente, termina el bucle
+                }
+            }
+            // Agrega el barco al jugador 1
+            board.ships.getOrPut("player1") { mutableListOf() }.add(ship)
+        }
+        // Imprime el tablero después de colocar los barcos
+        board.printBoard()
+/*              ==========> ESTE FOR ES PARA COLOCAR LOS BARCOS AL JUGADOR 2 PERO SE ESTAN COLOCANDO 10 BARCOS EN EL MISMO TABLERO <===========
+        for (type in shipTypes) {
+            val ship = Ship(type, ShipAlignment.HORIZONTAL)
+            while (true) {
+                val row = (0 until rows).random()
+                val col = (0 until cols).random()
+                ship.aling = if ((0..1).random() == 0) ShipAlignment.VERTICAL else ShipAlignment.HORIZONTAL
+                if (board.placeShip(ship, row, col)) {
+                    break
+                }
+            }
+            board.ships.getOrPut("player2") { mutableListOf() }.add(ship)
+        }
+        */
     }
 }
