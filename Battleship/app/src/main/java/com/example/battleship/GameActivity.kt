@@ -77,19 +77,21 @@ class GameActivity : AppCompatActivity() {
 
         val gameId = intent.getStringExtra("gameId")
         gameId?.let {
-            fetchGameFromDatabase(gameId)
+            fetchGameFromDatabase(it)
+        } ?: run {                            //asegurar que si no existe el juego se cree uno nuevo
+            createNewGame()
         }
     }
 
     private fun fetchGameFromDatabase(gameId: String) {
-        Toast.makeText(this@GameActivity, "Search Game Id: $gameId", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Search Game Id: $gameId", Toast.LENGTH_LONG).show()
 
         database.child("games").child(gameId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val game = dataSnapshot.getValue(Game::class.java)
                 Toast.makeText(this@GameActivity, "Game found", Toast.LENGTH_LONG).show()
                 game?.let {
-                    updateGame(game)
+                    updateGame(it)
                 }
             }
 
@@ -99,17 +101,30 @@ class GameActivity : AppCompatActivity() {
         })
     }
 
+    private fun createNewGame() {
+        val rows = 10
+        val cols = 10
+        val board = Board(rows, cols)
+        val player1 = Player("player1@example.com", "player1Id")
+        val player2 = Player("player2@example.com", "player2Id")
+
+        val game = Game(rows, cols, board, "testMatch", false, "player1Id", player1, player2, "")
+        game.generateCells()
+        game.generateShips()
+
+        database.child("games").push().setValue(game)
+        updateGame(game)
+    }
+
     private fun updateGame(game: Game) {
         this.game = game
         if (game.finishAt.isNotBlank()){
-            Toast.makeText(this@GameActivity, "Game finished... ", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Game finished...", Toast.LENGTH_LONG).show()
             goToMatch()
         }
 
-        this.game?.let {
-            setContent {
-                GameScreen(this.game!!)
-            }
+        setContent {
+            GameScreen(this.game!!)
         }
     }
 
@@ -119,13 +134,14 @@ class GameActivity : AppCompatActivity() {
     }
 }
 
+
 @OptIn(
     ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class,
     ExperimentalMaterial3Api::class
 )
-
 @Composable
 fun GameScreen(game: Game) {
+
     val navigationState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -163,9 +179,7 @@ fun GameScreen(game: Game) {
                     Spacer(modifier = Modifier.height(26.dp))
                     items.forEach { drawerItem ->
                         NavigationDrawerItem(
-                            label = {
-                                Text(text = drawerItem.title)
-                            },
+                            label = { Text(text = drawerItem.title) },
                             selected = drawerItem == selectedItem.value,
                             onClick = {
                                 selectedItem.value = drawerItem
@@ -224,6 +238,7 @@ fun GameScreen(game: Game) {
         }
     }
 }
+
 
 @Preview
 @Composable
